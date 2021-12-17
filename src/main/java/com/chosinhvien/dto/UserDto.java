@@ -1,9 +1,8 @@
 package com.chosinhvien.dto;
 
-import com.chosinhvien.entity.RoleEntity;
+import com.chosinhvien.entity.Role;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +12,11 @@ public class UserDto {
     private Long id;
     private String email;
     private String password;
-    private List<RoleEntity> roles = new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
     private String name;
     private String phone;
     private String address;
+    private Boolean locked;
+    private Boolean enabled;
 
 }
