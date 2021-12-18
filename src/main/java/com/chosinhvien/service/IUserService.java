@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IUserService {
     List<UserDto> findAll();
-    User add(User user);
+    String add(User user);
     void addRoleToUser(String email, String roleName);
+    User findByEmail(String email);
 }

@@ -8,9 +8,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "ConfirmationToken")
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class ConfirmationToken {
 
     @Id
@@ -30,8 +30,16 @@ public class ConfirmationToken {
 
     @ManyToOne
     @JoinColumn(
-            name = "app_user_id"
+            name = "user_token",
+            nullable = false
     )
-    @Column(nullable = false)
     private User user;
+
+    public ConfirmationToken(String token, LocalDateTime createdAt, LocalDateTime expiresAt, User user) {
+        this.token = token;
+        this.createdAt = createdAt;
+        this.expiresAt = expiresAt;
+        this.user = user;
+    }
+
 }

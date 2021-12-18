@@ -41,10 +41,9 @@ public class User {
     private String address;
 
     @Column(nullable = false)
-    private Boolean locked;
+    private Boolean locked = false;
 
     @Column(nullable = false)
-    private Boolean enabled;
-
+    private Boolean enabled = false;
 
 }
