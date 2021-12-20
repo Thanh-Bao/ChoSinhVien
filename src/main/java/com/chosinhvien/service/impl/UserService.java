@@ -3,14 +3,11 @@ package com.chosinhvien.service.impl;
 import com.chosinhvien.constant.MessageException;
 import com.chosinhvien.constant.UserRole;
 import com.chosinhvien.dto.UserDto;
-import com.chosinhvien.entity.ConfirmationToken;
 import com.chosinhvien.entity.Role;
 import com.chosinhvien.entity.User;
 import com.chosinhvien.repository.UserRepo;
-import com.chosinhvien.service.IConfirmationTokenService;
 import com.chosinhvien.service.IRoleService;
 import com.chosinhvien.service.IUserService;
-import com.chosinhvien.util.EmailValidator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,10 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +31,6 @@ public class UserService implements IUserService, UserDetailsService {
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final IRoleService roleService;
-    private final IConfirmationTokenService confirmationService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -47,7 +41,7 @@ public class UserService implements IUserService, UserDetailsService {
         }
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getName()));
         });
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
@@ -59,24 +53,16 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public String add(User user) {
-        addRoleToUser(user.getEmail(), UserRole.USER.name());
+    public User add(User user) {
+        user.setId(0L);
+        user.setEnabled(false);
+        user.setLocked(false);
         String passwordEncoder = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(passwordEncoder);
-        User newUser = userRepo.save(user);
-
-        String token = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken(
-                token,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15),
-                user
-        );
-        confirmationService.save(confirmationToken);
-
-        //TODO: Send token
-
-        return token;
+        userRepo.save(user);
+        addRoleToUser(user.getEmail(), UserRole.USER.name());
+        User newUser = userRepo.findByEmail(user.getEmail());
+        return newUser;
     }
 
     @Override
@@ -89,6 +75,11 @@ public class UserService implements IUserService, UserDetailsService {
     @Override
     public User findByEmail(String email) {
         return userRepo.findByEmail(email);
+    }
+
+    @Override
+    public int enableUser(String email) {
+        return userRepo.updateEnable(email);
     }
 
 }

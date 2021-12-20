@@ -6,9 +6,13 @@ import com.chosinhvien.service.IConfirmationTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
-public class ConfirmationTokenTokenService implements IConfirmationTokenService {
+@Transactional
+public class ConfirmationTokenService implements IConfirmationTokenService {
 
     private final ConfirmationTokenRepo confirmationTokenRepo;
 
@@ -20,5 +24,10 @@ public class ConfirmationTokenTokenService implements IConfirmationTokenService 
     @Override
     public ConfirmationToken findByToken(String token) {
         return confirmationTokenRepo.findByToken(token);
+    }
+
+    @Override
+    public int setConfirmedAt(String token) {
+        return confirmationTokenRepo.updateConfirmedAt(token, LocalDateTime.now());
     }
 }

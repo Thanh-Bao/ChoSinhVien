@@ -4,7 +4,7 @@
 <div id="logreg-forms">
 
     <!-- đăng nhập -->
-    <form class="form-signin">
+    <form name ="f" action="/login" method="post" class="form-signin">
         <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">Đăng nhập</h1>
         <div class="social-login">
             <button class="btn facebook-btn social-btn" type="button"><span><i class="fa fa-facebook-f"></i> Sign in with Facebook</span>
@@ -15,11 +15,11 @@
         </div>
         <p style="text-align:center"> Hoặc </p>
 
-        <input type="email" id="inputEmail" class="form-control" placeholder="Nhập số điện thoại của bạn" required="" autofocus="">
+        <input type="email" name="username" class="form-control" placeholder="Email" required="" autofocus="">
 
-        <input type="password" id="inputPassword" class="form-control" placeholder="Nhập mật khẩu của bạn" required="">
+        <input type="password" name="password" class="form-control" placeholder="Password" required="">
 
-        <button style="width: 100%;" class="btn btn-success btn-block" type="submit"><i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập
+        <button style="width: 100%;" class="btn btn-success btn-block" name="submit" type="submit"><i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập
         </button>
         <a style="text-align: center;" href="#" id="forgot_pswd">Bạn quên mật khẩu?</a>
         <hr>

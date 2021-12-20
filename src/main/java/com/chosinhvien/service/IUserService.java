@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface IUserService {
     List<UserDto> findAll();
-    String add(User user);
+    User add(User user);
     void addRoleToUser(String email, String roleName);
     User findByEmail(String email);
+    int enableUser(String email);
 }

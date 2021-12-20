@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "user")
+@Entity(name = "User")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -41,9 +41,9 @@ public class User {
     private String address;
 
     @Column(nullable = false)
-    private Boolean locked = false;
+    private Boolean locked;
 
     @Column(nullable = false)
-    private Boolean enabled = false;
+    private Boolean enabled;
 
 }
