@@ -48,8 +48,16 @@ $('#list-select-img').on('click', '.remove_img_preview', function () {
     count--;
 });
 
-$(document).ready(function () {
-    $('a#heart').click(function () {
-        $(this).toggleClass("heart-luu");
-    });
-});
+// $(document).ready(function () {
+//     $('a#heart').click(function () {
+//         $(this).toggleClass("heart-luu");
+//     });
+// });
+
+function setQuantityCartItemIncrease(id){
+    $('#quantity'+id).val(1);
+}
+
+function setQuantityCartItemDecrease(id){
+    $('#quantity'+id).val(-1);
+}

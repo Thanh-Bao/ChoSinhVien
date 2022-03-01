@@ -4,7 +4,7 @@
 <nav class="navbar navbar-expand-lg navbar-light ">
     <div class="container px-4 px-lg-5">
         <a class="navbar-brand" href="home.html">
-            <img src="assets/csv-logo.png" alt="">
+            <img src="/template/web/assets/csv-logo.png" alt="">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
