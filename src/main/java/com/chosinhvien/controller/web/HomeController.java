@@ -1,20 +1,22 @@
 package com.chosinhvien.controller.web;
 
+import com.chosinhvien.dto.CategoryDto;
+import com.chosinhvien.dto.ProductDto;
 import com.chosinhvien.dto.ServicePackDto;
 import com.chosinhvien.dto.UserDto;
-import com.chosinhvien.entity.Bill;
-import com.chosinhvien.entity.BillDetail;
-import com.chosinhvien.entity.ServicePack;
+import com.chosinhvien.entity.*;
 import com.chosinhvien.model.Cart;
 import com.chosinhvien.model.CartItem;
 
-import com.chosinhvien.service.IBillDetailService;
-import com.chosinhvien.service.IBillService;
-import com.chosinhvien.service.IServicePackService;
-import com.chosinhvien.service.IUserService;
+import com.chosinhvien.service.*;
+import com.chosinhvien.util.Paging;
 import com.chosinhvien.util.Utils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,9 +42,29 @@ public class HomeController {
     private final IBillService billService;
     private final IBillDetailService billDetailService;
     private final ModelMapper mapper;
+    private final IProductService productService;
+    private final ICategoryService categoryService;
 
     @GetMapping("/trang-chu")
-    public String getHomePage() {
+    public String getHomePage(@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "limit", defaultValue = "2") int limit, Model model) {
+        Paging paging = new Paging();
+        paging.setPage(page);
+        paging.setLimit(limit);
+        Pageable pageable = PageRequest.of(page-1,limit);
+        paging.setTotalItem(productService.getTotalItem());
+        paging.setTotalPage((int) Math.ceil((double) paging.getTotalItem() / paging.getLimit()));
+        List<ProductDto> products = productService.findAll(pageable).getContent()
+                .stream().map(product -> mapper.map(product, ProductDto.class))
+                .collect(Collectors.toList());
+
+
+        List<CategoryDto> categories = categoryService.findAll()
+                .stream().map(category -> mapper.map(category, CategoryDto.class))
+                .collect(Collectors.toList());
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("products", products);
+        model.addAttribute("paging", paging);
         return "web/home";
     }
 
@@ -110,6 +132,75 @@ public class HomeController {
         billDetailService.saveAll(newOrderDetails);
         cart.clear();
         return "web/test";
+    }
+
+    @GetMapping("/{slug}")
+    public String getProductBySlug(@PathVariable("slug") String slug,
+                                   @RequestParam(value = "page", defaultValue = "1") int page,
+                                   @RequestParam(value = "limit", defaultValue = "2") int limit,
+                                   Model model) {
+        Category category = categoryService.findBySlug(slug);
+        Paging paging = new Paging();
+        paging.setPage(page);
+        paging.setLimit(limit);
+        Pageable pageable = PageRequest.of(page-1,limit);
+        paging.setTotalItem(productService.getTotalItemByCategory(category));
+        paging.setTotalPage((int) Math.ceil((double) paging.getTotalItem() / paging.getLimit()));
+
+        List<ProductDto> products = productService.findAllByCategoryOrderByCreatedAtDesc(category, pageable).getContent()
+                .stream().map(product -> mapper.map(product, ProductDto.class))
+                .collect(Collectors.toList());
+
+        model.addAttribute("products", products);
+        model.addAttribute("paging", paging);
+        model.addAttribute("slug", slug);
+        return "web/loai-san-pham";
+    }
+
+    @GetMapping("/{slug}/gia-giam")
+    public String getProductBySlugOrderByPriceDesc(@PathVariable("slug") String slug,
+                                   @RequestParam(value = "page", defaultValue = "1") int page,
+                                   @RequestParam(value = "limit", defaultValue = "2") int limit,
+                                   Model model) {
+        Category category = categoryService.findBySlug(slug);
+        Paging paging = new Paging();
+        paging.setPage(page);
+        paging.setLimit(limit);
+        Pageable pageable = PageRequest.of(page-1,limit);
+        paging.setTotalItem(productService.getTotalItemByCategory(category));
+        paging.setTotalPage((int) Math.ceil((double) paging.getTotalItem() / paging.getLimit()));
+
+        List<ProductDto> products = productService.findAllByCategoryOrderByPriceDesc(category, pageable).getContent()
+                .stream().map(product -> mapper.map(product, ProductDto.class))
+                .collect(Collectors.toList());
+
+        model.addAttribute("products", products);
+        model.addAttribute("paging", paging);
+        model.addAttribute("slug", slug);
+        return "web/loai-san-pham-gia-giam";
+    }
+
+    @GetMapping("/{slug}/gia-tang")
+    public String getProductBySlugOrderByPriceAsc(@PathVariable("slug") String slug,
+                                                   @RequestParam(value = "page", defaultValue = "1") int page,
+                                                   @RequestParam(value = "limit", defaultValue = "2") int limit,
+                                                   Model model) {
+        Category category = categoryService.findBySlug(slug);
+        Paging paging = new Paging();
+        paging.setPage(page);
+        paging.setLimit(limit);
+        Pageable pageable = PageRequest.of(page-1,limit);
+        paging.setTotalItem(productService.getTotalItemByCategory(category));
+        paging.setTotalPage((int) Math.ceil((double) paging.getTotalItem() / paging.getLimit()));
+
+        List<ProductDto> products = productService.findAllByCategoryOrderByPriceAsc(category, pageable).getContent()
+                .stream().map(product -> mapper.map(product, ProductDto.class))
+                .collect(Collectors.toList());
+
+        model.addAttribute("products", products);
+        model.addAttribute("paging", paging);
+        model.addAttribute("slug", slug);
+        return "web/loai-san-pham-gia-tang";
     }
 
 

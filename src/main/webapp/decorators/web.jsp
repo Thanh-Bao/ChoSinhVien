@@ -14,6 +14,8 @@
     <%--    css--%>
     <link href="<c:url value='/template/web/css/styles.css'/>" rel="stylesheet"/>
     <link href="<c:url value='/template/web/css/web.css'/>" rel="stylesheet"/>
+<%--    jquery--%>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body class="grey">
 
@@ -31,6 +33,6 @@
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
 <script src="<c:url value='/template/web/js/scripts.js'/>"></script>
-
+<script src="<c:url value='/template/web/paging/jquery.twbsPagination.js'/>" type="text/javascript"></script>
 </body>
 </html>

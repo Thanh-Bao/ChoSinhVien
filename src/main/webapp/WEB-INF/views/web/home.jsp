@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ include file="/common/taglib.jsp" %>
 <!-- Carousel-->
 <div class="container white py-4 px-4 px-lg-4 mt-4">
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -33,155 +34,81 @@
 <section>
     <div class="container mt-3 white">
         <div class="row row-cols-xl-6 row-cols-sm-3 row-cols-2 justify-content-center">
-            <div class="col my-4">
-                <li>
-                    <a href="#" class="canh-giua-flex-column">
-                        <div>
-                            <img class="img-category" src="" alt="">
-                        </div>
-                        <span>Xe cộ nhà cửa</span>
-                    </a>
-                </li>
-            </div>
-            <div class="col my-4">
-                <li>
-                    <a href="#" class="canh-giua-flex-column">
-                        <div>
-                            <img class="img-category" src="" alt="">
-                        </div>
-                        <span>Xe cộ nhà cửa</span>
-                    </a>
-                </li>
-            </div>
-            <div class="col my-4">
-                <li>
-                    <a href="#" class="canh-giua-flex-column">
-                        <div>
-                            <img class="img-category" src="" alt="">
-                        </div>
-                        <span>Xe cộ nhà cửa</span>
-                    </a>
-                </li>
-            </div>
-            <div class="col my-4">
-                <li>
-                    <a href="#" class="canh-giua-flex-column">
-                        <div>
-                            <img class="img-category" src="" alt="">
-                        </div>
-                        <span>Xe cộ nhà cửa</span>
-                    </a>
-                </li>
-            </div>
-            <div class="col my-4">
-                <li>
-                    <a href="#" class="canh-giua-flex-column">
-                        <div>
-                            <img class="img-category" src="" alt="">
-                        </div>
-                        <span>Xe cộ nhà cửa</span>
-                    </a>
-                </li>
-            </div>
-            <div class="col my-4">
-                <li>
-                    <a href="#" class="canh-giua-flex-column">
-                        <div>
-                            <img class="img-category" src="" alt="">
-                        </div>
-                        <span>Xe cộ nhà cửa</span>
-                    </a>
-                </li>
-            </div>
+
+           <c:forEach var="item" items="${categories}">
+               <div class="col my-4">
+                   <li>
+                       <a href='<c:url value="/${item.slug}"/>' class="canh-giua-flex-column">
+                           <div>
+                               <img class="img-category" src="" alt="">
+                           </div>
+                           <span>${item.name}</span>
+                       </a>
+                   </li>
+               </div>
+           </c:forEach>
+
+
         </div>
     </div>
 </section>
 
 <!-- Section-->
 <section>
-    <div class="container white px-4 px-lg-4 mt-3 py-4">
-        <div class=" row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
-            <div class="col mb-5">
-                <a href="product-details.html">
-                    <div class="card h-100 product-card">
-                        <!-- Product image-->
-                        <img class="card-img-top" src="https://dummyimage.com/650x650/dee2e6/6c757d.jpg"
-                             alt="..."/>
-                        <!-- Product details-->
-                        <div class="card-body canh-giua-flex-column">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <p class="">Fancy Product dfadf dfasdf fasfd fadf dfadf </p>
-                                <!-- Product price-->
-                                <p class="fw-bold" style="color: red;">50.000đ</p>
+    <div class="container white px-4 px-lg-4 mt-3 py-4">
+        <form  action='<c:url value ="/trang-chu"/>' id="formSubmit" method="get">
+            <div class=" row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <c:forEach var="item" items="${products}">
+                <div class="col mb-5">
+                    <a href="product-details.html">
+                        <div class="card h-100 product-card">
+                            <!-- Product image-->
+                            <img class="card-img-top" src="${item.images.get(0).link}"
+                                 alt="..."/>
+                            <!-- Product details-->
+                            <div class="card-body canh-giua-flex-column">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <p class="">${item.name} </p>
+                                    <!-- Product price-->
+                                    <p class="fw-bold" style="color: red;">${item.price}</p>
+                                </div>
+                                <a class="btn btn-outline-danger"><i class="fa fa-heart-o"
+                                                                     aria-hidden="true"></i></a>
                             </div>
-                            <a class="btn btn-outline-danger"><i class="fa fa-heart-o"
-                                                                                aria-hidden="true"></i></a>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
+                </c:forEach>
             </div>
-            <div class="col mb-5">
-                <a href="product-details.html">
-                    <div class="card h-100 product-card">
-                        <!-- Product image-->
-                        <img class="card-img-top" src="https://dummyimage.com/650x650/dee2e6/6c757d.jpg"
-                             alt="..."/>
-                        <!-- Product details-->
-                        <div class="card-body canh-giua-flex-column">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <p class="">Fancy Product dfadf dfasdf fasfd fadf dfadf </p>
-                                <!-- Product price-->
-                                <p class="fw-bold" style="color: red;">50.000đ</p>
-                            </div>
-                            <a  class="btn btn-outline-danger"><i class="fa fa-heart-o"
-                                                                                aria-hidden="true"></i></a>
-                        </div>
-                    </div>
-                </a>
+            <div class="container canh-giua">
+                    <ul class="pagination" id="pagination"></ul>
+                <input type ="hidden" value ="" id ="page" name = "page"/>
+                <input type ="hidden" value ="" id ="limit" name = "limit"/>
             </div>
-            <div class="col mb-5">
-                <a href="product-details.html">
-                    <div class="card h-100 product-card">
-                        <!-- Product image-->
-                        <img class="card-img-top" src="https://dummyimage.com/650x650/dee2e6/6c757d.jpg"
-                             alt="..."/>
-                        <!-- Product details-->
-                        <div class="card-body canh-giua-flex-column">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <p class="">Fancy Product dfadf dfasdf fasfd fadf dfadf </p>
-                                <!-- Product price-->
-                                <p class="fw-bold" style="color: red;">50.000đ</p>
-                            </div>
-                            <a  class="btn btn-outline-danger"><i class="fa fa-heart-o"
-                                                                                aria-hidden="true"></i></a>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col mb-5">
-                <a href="product-details.html">
-                    <div class="card h-100 product-card">
-                        <!-- Product image-->
-                        <img class="card-img-top" src="https://dummyimage.com/650x650/dee2e6/6c757d.jpg"
-                             alt="..."/>
-                        <!-- Product details-->
-                        <div class="card-body canh-giua-flex-column">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <p class="">Fancy Product dfadf dfasdf fasfd fadf dfadf </p>
-                                <!-- Product price-->
-                                <p class="fw-bold" style="color: red;">50.000đ</p>
-                            </div>
-                            <a  class="btn btn-outline-danger"><i class="fa fa-heart-o"
-                                                                                aria-hidden="true"></i></a>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
+        </form>
     </div>
+
+
 </section>
+
+<script type="text/javascript">
+    var totalPages = ${paging.totalPage};
+    var currentPage = ${paging.page};
+    $(function () {
+        window.pagObj = $('#pagination').twbsPagination({
+            totalPages: totalPages,
+            visiblePages: 10,
+            startPage: currentPage,
+            onPageClick: function (event, page) {
+                if (currentPage != page) {
+                    $('#limit').val(2);
+                    $('#page').val(page);
+                    $('#formSubmit').submit();
+                }
+
+            }
+        });
+    });
+</script>
